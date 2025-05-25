@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, send_from_directory
 import subprocess
 import os
 
-app = Flask(__name__, static_folder="../frontend", static_url_path="")
+app = Flask(__name__, static_folder="static", static_url_path="")
 
 @app.route("/download", methods=["POST"])
 def download():
