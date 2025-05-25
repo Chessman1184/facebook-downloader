@@ -2,7 +2,10 @@ from flask import Flask, request, jsonify, send_from_directory
 import subprocess
 import os
 
-app = Flask(__name__, static_folder="static", static_url_path="")
+# Set static folder path relative to this file (one level up, then 'static')
+static_folder_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "static"))
+
+app = Flask(__name__, static_folder=static_folder_path, static_url_path="")
 
 @app.route("/download", methods=["POST"])
 def download():
