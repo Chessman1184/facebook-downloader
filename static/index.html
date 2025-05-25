@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Facebook Video/Image Downloader</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Facebook Downloader</h1>
+    <p>Paste any public Facebook video or image link below.</p>
+    <input type="text" id="fbLink" placeholder="Paste Facebook URL here" />
+    <button onclick="download()">Download</button>
+    <p id="status"></p>
+    <div id="result" style="margin-top: 20px;"></div>
+
+    <hr />
+    <small>
+      <strong>Disclaimer:</strong> This tool is for educational and personal use only.
+      Download only content you own or have permission for. We do not host or store any content.
+    </small>
+  </div>
+
+  <script>
+    async function download() {
+      const url = document.getElementById("fbLink").value;
+      const status = document.getElementById("status");
+      const result = document.getElementById("result");
+
+      status.innerText = "Processing...";
+      result.innerHTML = "";
+
+      try {
+        const res = await fetch("/download", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url }),
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          status.innerText = "Ready:";
+          result.innerHTML = `<a href="${data.direct_url}" download target="_blank">Click here to download</a>`;
+        } else {
+          status.innerText = "Error: " + data.error;
+        }
+      } catch (err) {
+        status.innerText = "Something went wrong.";
+      }
+    }
+  </script>
+</body>
+</html>
